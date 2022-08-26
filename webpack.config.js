@@ -2,6 +2,7 @@ const path = require('path')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -31,6 +32,43 @@ function configureCss(modules = false, sass = false) {
   }
 
   return loaders
+}
+
+
+function configurePlugins() {
+  const plugins = [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+      minify: {
+        collapseWhitespace: isProd,
+      },
+    }),
+    new MiniCssExtractPlugin({
+      filename: isProd ? "assets/css/[name].[contenthash].css" : "[name].css",
+    }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "public"),
+          globOptions: {
+            ignore: ["**/index.html"]
+          },
+        },
+      ],
+    }),
+  ]
+
+  if (!isProd) {
+    plugins.push(
+      new ESLintPlugin({
+        context: path.resolve(__dirname, "./src"),
+        extensions: ["js", "jsx", "ts", "tsx"],
+        quiet: false,
+      })
+    )
+  }
+
+  return plugins
 }
 
 
@@ -120,25 +158,5 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json", ".css", ".scss", ".sass"],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
-      minify: {
-        collapseWhitespace: isProd,
-      },
-    }),
-    new MiniCssExtractPlugin({
-      filename: isProd ? "assets/css/[name].[contenthash].css" : "[name].css",
-    }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, "public"),
-          globOptions: {
-            ignore: ["**/index.html"]
-          },
-        },
-      ]
-    })
-  ],
+  plugins: configurePlugins(),
 }

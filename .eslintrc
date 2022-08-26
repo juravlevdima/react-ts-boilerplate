@@ -1,0 +1,32 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "react-app",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "arrow-parens": "warn",
+    "no-console": "warn",
+    "indent": ["warn", 2],
+    "comma-dangle": ["warn", "only-multiline"],
+    "prefer-const": "warn",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "react/no-array-index-key": "warn",
+    "react/jsx-key": "warn",
+    "eol-last": ["warn", "always"],
+    "no-multiple-empty-lines": ["warn", { "max": 2, "maxEOF": 1, "maxBOF": 0 }],
+    "max-len": [
+      "warn",
+      {
+        "code": 100,
+        "tabWidth": 2,
+        "ignoreComments": true
+      }
+    ]
+  },
+  "ignorePatterns": ["webpack.config.js"]
+}
