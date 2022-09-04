@@ -25,12 +25,12 @@
       "afterColon": true
     }],
     "space-before-blocks": ["warn", {
-      "functions": "never",
+      "functions": "always",
       "keywords": "always",
       "classes": "always"
     }],
     "spaced-comment": ["warn", "always"],
-    "object-curly-spacing": ["warn", "always", { "arraysInObjects": false, "objectsInObjects": false }],
+    "object-curly-spacing": ["warn", "always", { "objectsInObjects": false }],
     "space-unary-ops": ["warn", {
       "words": true,
       "nonwords": false
@@ -40,6 +40,7 @@
     "quotes": ["warn", "single"],
     "jsx-quotes": ["warn", "prefer-double"],
     "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "react/no-array-index-key": "warn",
     "react/jsx-key": "warn",
     "eol-last": ["warn", "always"],
@@ -47,11 +48,11 @@
     "max-len": [
       "warn",
       {
-        "code": 100,
+        "code": 130,
         "tabWidth": 2,
         "ignoreComments": true
       }
     ]
   },
-  "ignorePatterns": ["webpack.config.js"]
+  "ignorePatterns": ["webpack.config.js", "tailwind.config.js", "postcss.config.js"]
 }

@@ -35,6 +35,7 @@ function configureCss(modules = false, sass = false) {
 }
 
 
+// Configure plugins:
 function configurePlugins() {
   const plugins = [
     new HtmlWebpackPlugin({
@@ -75,7 +76,8 @@ function configurePlugins() {
 module.exports = {
   mode: isProd ? "production" : "development",
   devServer: {
-    port: 3000,
+    historyApiFallback: true,
+    port: process.env.PORT || 3000,
     hot: true,
   },
   devtool: isProd ? false : "source-map",
@@ -87,9 +89,16 @@ module.exports = {
     path: path.resolve(__dirname, "./build"),
     filename: isProd ? "assets/js/[name].[contenthash].js" : "[name].js",
   },
+  performance: {
+    hints: isProd ? "warning" : false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000
+  },
   optimization: {
     splitChunks: {
       chunks: "all",
+      minSize: 10000,
+      maxSize: 512000,
     },
   },
   module: {
@@ -136,21 +145,20 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg|webp)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: isProd ? '[name].[contenthash].[ext]' : '[name].[ext]',
-              outputPath: 'assets/images'
-            },
-          },
-        ],
+        type: 'asset/resource',
+        generator: {
+          filename: isProd
+            ? 'assets/images/[name][contenthash][ext]'
+            : 'assets/images/[name][ext]',
+        }
       },
       {
         test: /\.([ot]tf|woff2?|eot)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/fonts/[name][ext]'
+          filename: isProd
+            ? 'assets/fonts/[name][contenthash][ext]'
+            : 'assets/fonts/[name][ext]',
         }
       },
     ],
