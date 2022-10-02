@@ -1,8 +1,9 @@
 const path = require('path')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
-const ESLintPlugin = require('eslint-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const CopyPlugin = require("copy-webpack-plugin")
+const ESLintPlugin = require('eslint-webpack-plugin')
+const { GenerateSW } = require('workbox-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -47,6 +48,11 @@ function configurePlugins() {
     new MiniCssExtractPlugin({
       filename: isProd ? "assets/css/[name].[contenthash].css" : "[name].css",
     }),
+    new GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+      disableDevLogs: true
+    }),
     new CopyPlugin({
       patterns: [
         {
@@ -79,6 +85,9 @@ module.exports = {
     historyApiFallback: true,
     port: process.env.PORT || 3000,
     hot: true,
+    // proxy: {
+    //   '/api': 'http://localhost:8080',
+    // },
   },
   devtool: isProd ? false : "source-map",
   entry: {
