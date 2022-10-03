@@ -48,11 +48,6 @@ function configurePlugins() {
     new MiniCssExtractPlugin({
       filename: isProd ? "assets/css/[name].[contenthash].css" : "[name].css",
     }),
-    new GenerateSW({
-      clientsClaim: true,
-      skipWaiting: true,
-      disableDevLogs: true
-    }),
     new CopyPlugin({
       patterns: [
         {
@@ -71,6 +66,16 @@ function configurePlugins() {
         context: path.resolve(__dirname, "./src"),
         extensions: ["js", "jsx", "ts", "tsx"],
         quiet: false,
+      })
+    )
+  }
+
+  if (isProd) {
+    plugins.push(
+      new GenerateSW({
+        clientsClaim: true,
+        skipWaiting: true,
+        disableDevLogs: true
       })
     )
   }
