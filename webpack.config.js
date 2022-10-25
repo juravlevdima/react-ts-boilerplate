@@ -100,6 +100,7 @@ module.exports = {
   },
   output: {
     clean: true,
+    publicPath: '/',
     path: path.resolve(__dirname, "./build"),
     filename: isProd ? "assets/js/[name].[contenthash].js" : "[name].js",
   },
